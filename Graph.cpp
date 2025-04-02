@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Graph.hpp"
 #include "Edge.hpp"
+#include "praiority_Q.hpp"
 
 namespace graphs
 {
@@ -15,7 +16,7 @@ namespace graphs
         
         }
 
-        void Graph::addEdge (int v, int u, int w)
+    void Graph::addEdge ( int u,int v, int w , bool directed)
         {
 
             if (v >= V || u >= V || v < 0 || u < 0) { //not neccesary
@@ -23,14 +24,7 @@ namespace graphs
                 return;
             }
 
-            if(g_list[v]==nullptr){
-                g_list[v]=new Edge[V]();
-            }
 
-    
-            g_list[v][size[v]] = Edge(u, w);
-            size[v]++;
-    
            
             if (g_list[u] == nullptr) {
                 g_list[u] = new Edge[V](); 
@@ -39,39 +33,54 @@ namespace graphs
             g_list[u][size[u]] = Edge( v, w);
             size[u]++;
             
+            if(!directed){
+            if(g_list[v]==nullptr){
+                g_list[v]=new Edge[V]();
+            }
+            
+    
+            g_list[v][size[v]] = Edge(u, w);
+            size[v]++;
+    
+        }
      
         }
 
-        bool Graph::has_edge(int v, int u){ //checks if the edge exist
-            for(int i=0; i<size[v]; i++){
-                if(g_list[v][i].get_neighbor()==u){
-                    return true;
-                }
-            }
+        bool Graph::has_edge(int u, int v, bool directed) { // checks if the edge exists
 
-            for(int i=0; i<size[u]; i++){
+            int list[V];
+            int neighbor_num = this->get_size(u);
+
+            for (int i = 0; i < neighbor_num; i++) {
                 if(g_list[u][i].get_neighbor()==v){
                     return true;
                 }
             }
-            return false;
+
+            if (directed) {
+                return false;
+            }
+        
+            int list2[V];
+
+            for (int i = 0; i < neighbor_num; i++) {
+                if(g_list[v][i].get_neighbor()==u){
+                    return true;
+                }
+            }
+            
+        
+            return false; 
         }
 
-        void Graph::removeEdge (int v , int u)
+        void Graph::removeEdge ( int u, int v, bool directed=false)
         {
-            if(has_edge(v,u)){
-                for(int i=0; i<size[v];i++){
-                    if(g_list[v][size[i]].get_neighbor()==u){
-                        for(int j=i;j<size[v]; j++){
-                            g_list[v][j]=g_list[v][j+1];
-                        }
-                        size[v]--;
-                        break;
-                    }
-                }
-
+            //int s1=size[u];
+            int list[V];
+            get_vertex_list(u,list);
+            if(has_edge(u,v,directed)){   
                 for(int i=0; i<size[u];i++){
-                    if(g_list[u][size[i]].get_neighbor()==v){
+                   if(list[i]==v){
                         for(int j=i;j<size[v]; j++){
                             g_list[u][j]=g_list[u][j+1];
                         }
@@ -79,25 +88,41 @@ namespace graphs
                         break;
                     }
                 }
+                if(directed==false){
+                    //int s2=size[v];
+                    int list2[V];
+                    get_vertex_list(v,list2);
+                    for(int i=0; i<size[v];i++){
+                        if(list2[i]==u){
+                            for(int j=i;j<size[v]; j++){
+                                g_list[v][j]=g_list[v][j+1];
+                            }
+                        size[v]--;
+                        break;
+                        }
+                    }
+                }
+            }
                 
-            }else{ 
+            else{ 
                 std::cout<<"Edge not Exist"<<std::endl;
             }
         }
         void Graph::print_graph ()
         {
-           
+            std::cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\print\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"<<std::endl;
             for(int i=0; i<V ;i++){
                 std::cout<<"{";
                 std::cout<<i<<" :";
                 for(int j=0; j<size[i]; j++){
-                    std::cout<<"V - "<<g_list[i][j].get_neighbor()<<" W - " <<g_list[i][j].get_weigt();
+                    std::cout<<"(v- "<<g_list[i][j].get_neighbor()<<" w- " <<g_list[i][j].get_weigt();
                     if(j!=size[i]-1){
-                        std:: cout << " , ";
+                        std:: cout << ") , ";
                     }
                 }
-                std::cout<<"}"<<std::endl;
+                std::cout<<")}"<<std::endl;
             }
+            std::cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\print\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"<<std::endl;
 
         }
 
@@ -105,20 +130,75 @@ namespace graphs
         {
             return V;
         }
+        void Graph::get_vertex_list(int u , int * list) //insert to given list all neighbors indexs
+        {  
+            //int vertex_num = size[u];
+            //int list[vertex_num];
+            int j=0;
+            for(int i = 0 ;i<V; i++){
+                if(has_edge(u,i,true)){
+                    list[j]=i;
+                    j++;
+                }
+            }
+
+        }
 
         int Graph::get_size(int u) //returns the number of edges
         {
+            
            return size[u];
         }
-        
-        Graph::~Graph()
+
+        int Graph::get_neigbor(int src , int neigbor_num) //returns the neigbor by order
         {
-            for(int i=0;i<V; i++){
-                delete[] g_list[i];
-                
-            }
-            delete[] g_list;
-            delete[] size;
+            return g_list[src][neigbor_num].get_neighbor();
         }
+
+        void Graph::create_graph(Graph &new_g , int * pi ,int *d, int vertex_num , Graph &original){
+            for( int i = 0; i <vertex_num ; i++){
+                if(pi[i]>=0){ // build the tree by order for bfs
+                    //int weight = original.get_weight(pi[i], i); 
+                    int weight =d[i];
+                    new_g.addEdge(pi[i], i, weight , true);
+                    //new_g.addEdge(pi[i],i, g_list[pi[i]][i].get_weigt());
+                }
+            }
+            //new_g.print_graph();
+        }
+
+        int Graph::get_weight(int u, int v) //returnt the weight of tow
+        {
+            int adj =size[u];
+            for (int i =0 ; i <adj ; i++)
+            {
+                if(g_list[u][i].get_neighbor() == v){
+                    return g_list[u][i].get_weigt();
+                }
+            }
+            return -1; 
+        }
+
+        void Graph::set_weight(int indexi,int indexj ,int val){
+            g_list[indexi][indexj].set_weigt(val);
+        }
+
+
+        Graph::~Graph() {
+            if(g_list !=nullptr){
+            for (int i = 0; i < V; i++) {
+                if (g_list[i] != nullptr) {
+                    delete[] g_list[i];  
+                    //g_list[i] = nullptr;
+                }
+            }
+            delete []g_list;
+            //g_list=nullptr;  
+            delete[] size;
+            //size=nullptr;    
+            }
+        }
+
+
 
 } // namespace graph          

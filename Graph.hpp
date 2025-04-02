@@ -3,6 +3,7 @@
 #ifndef GRAPG_HEADER
 #define GRAPG_HEADER
 #include "Edge.hpp"
+
 namespace graphs
 {
     class Graph{
@@ -13,12 +14,18 @@ namespace graphs
         
     public:
         Graph(int num);
-        void addEdge (int v, int u, int w);
-        void removeEdge (int v , int u);
+
+        void addEdge (int u,int v, int w , bool directed=false);
+        void removeEdge (int v , int u,bool directed);
         void print_graph ();
-        bool has_edge(int v, int u);
+        bool has_edge(int u ,int v, bool directed);
         int get_vertex();
+        void get_vertex_list( int u, int * list);
         int get_size(int u);
+        int get_neigbor(int src , int neigbor_num);
+        int get_weight(int u, int v);
+        void set_weight(int indexi,int indexj, int val);
+        void create_graph(Graph &new_g , int * pi ,int *d, int vertex_num , Graph &original);
         ~Graph();
     };
 

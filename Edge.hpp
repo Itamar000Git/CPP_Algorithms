@@ -15,6 +15,7 @@ namespace graphs
         Edge(int neighbor, int weight);
         int get_neighbor();
         int get_weigt();
+        void set_weigt(int val);
         void print();
         ~Edge();
     };

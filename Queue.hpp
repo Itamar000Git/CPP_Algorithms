@@ -7,11 +7,12 @@ namespace graphs
     {
     private:
         int *arr;
-        int start, end, V;
+        int start, end, V ,q_size;
     public:
         Queue(int num);
         bool push(int u);
         int pop();
+        int min_pop(int * d);
         bool is_empty();
         ~Queue();
     };
