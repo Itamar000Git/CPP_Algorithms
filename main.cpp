@@ -11,21 +11,21 @@ int main() {
     Graph g(10) ,g1(5) , g2(10) ;
   
     int connected = 0;    
-    g.addEdge(0, 1, 10,false);
-    g.addEdge(0, 4, 20,false);
-    g.addEdge(1, 2, 30,false);
-    g.addEdge(1, 3, 40,false);
-    g.addEdge(2, 3, 60,false);
-    g.addEdge(3, 4, 70,false);
-    g.addEdge(1, 4, 50,false);
-    g.addEdge(2, 5, 40,false);
-    g.addEdge(3, 6, 30,false);
-    g.addEdge(2, 6, 7,false);
-    g.addEdge(5, 7, 30,false);
-    g.addEdge(5, 8, 40,false);
-    g.addEdge(0, 8, 50,false);
-    g.addEdge(7, 9, 50,false);
-    g.addEdge(3, 9, 10,false);
+    // g.addEdge(0, 1, 10,false);
+    // g.addEdge(0, 4, 20,false);
+    // g.addEdge(1, 2, 30,false);
+    // g.addEdge(1, 3, 40,false);
+    // g.addEdge(2, 3, 60,false);
+    // g.addEdge(3, 4, 70,false);
+    // g.addEdge(1, 4, 50,false);
+    // g.addEdge(2, 5, 40,false);
+    // g.addEdge(3, 6, 30,false);
+    // g.addEdge(2, 6, 7,false);
+    // g.addEdge(5, 7, 30,false);
+    // g.addEdge(5, 8, 40,false);
+    // g.addEdge(0, 8, 50,false);
+    // g.addEdge(7, 9, 50,false);
+    // g.addEdge(3, 9, 10,false);
 
     
  
@@ -131,13 +131,13 @@ int main() {
     g2.addEdge(7, 9, 100,false);
     g2.addEdge(3, 9, 10,false);
 
-    // g2.print_graph();
-    // Graph kruskal_tree = alg.kruskal(g2);
-    // kruskal_tree.print_graph();
-
     g2.print_graph();
-    Graph prim_tree = alg.prim(g2);
-    prim_tree.print_graph();
+    Graph kruskal_tree = alg.kruskal(g2);
+    kruskal_tree.print_graph();
+
+    // g2.print_graph();
+    // Graph prim_tree = alg.prim(g2);
+    // prim_tree.print_graph();
 
         return 0;
 }

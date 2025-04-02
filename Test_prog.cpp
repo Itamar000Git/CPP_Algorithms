@@ -35,21 +35,21 @@ TEST_CASE("testing the bfs function") {
   
     Graph g2(10);
     int connected = 0;    
-    g2.addEdge(0, 1, 10,false);
-    g2.addEdge(0, 4, 20,false);
-    g2.addEdge(0, 8, 50,false);
-    g2.addEdge(1, 2, 30,false);
-    g2.addEdge(1, 3, 40,false);
-    g2.addEdge(1, 4, 50,false);
-    g2.addEdge(2, 3, 60,false);
-    g2.addEdge(2, 5, 40,false);
-    g2.addEdge(2, 6, 7,false);
-    g2.addEdge(3, 4, 70,false);
-    g2.addEdge(3, 9, 10,false);
-    g2.addEdge(3, 6, 30,false);
-    g2.addEdge(5, 7, 30,false);
-    g2.addEdge(5, 8, 40,false);
-    g2.addEdge(7, 9, 50,false);
+    g2.addEdge(0, 1, 10);
+    g2.addEdge(0, 4, 20);
+    g2.addEdge(0, 8, 50);
+    g2.addEdge(1, 2, 30);
+    g2.addEdge(1, 3, 40);
+    g2.addEdge(1, 4, 50);
+    g2.addEdge(2, 3, 60);
+    g2.addEdge(2, 5, 40);
+    g2.addEdge(2, 6, 7);
+    g2.addEdge(3, 4, 70);
+    g2.addEdge(3, 9, 10);
+    g2.addEdge(3, 6, 30);
+    g2.addEdge(5, 7, 30);
+    g2.addEdge(5, 8, 40);
+    g2.addEdge(7, 9, 50);
 
 
 

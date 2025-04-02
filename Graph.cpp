@@ -73,7 +73,7 @@ namespace graphs
             return false; 
         }
 
-        void Graph::removeEdge ( int u, int v, bool directed=false)
+        void Graph::removeEdge ( int u, int v, bool directed)
         {
             //int s1=size[u];
             int list[V];
@@ -122,7 +122,7 @@ namespace graphs
                 }
                 std::cout<<")}"<<std::endl;
             }
-            std::cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\print\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"<<std::endl;
+
 
         }
 
@@ -132,8 +132,7 @@ namespace graphs
         }
         void Graph::get_vertex_list(int u , int * list) //insert to given list all neighbors indexs
         {  
-            //int vertex_num = size[u];
-            //int list[vertex_num];
+        
             int j=0;
             for(int i = 0 ;i<V; i++){
                 if(has_edge(u,i,true)){

@@ -18,7 +18,6 @@ namespace graphs
         void relax(int u , int v , int w, int *d,  int *pi);
 
         Graph prim(Graph &gr);
-        void min_edge(Graph &gr , int *arr);
         Graph kruskal(Graph &gr);
 
     };

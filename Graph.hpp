@@ -16,7 +16,7 @@ namespace graphs
         Graph(int num);
 
         void addEdge (int u,int v, int w , bool directed=false);
-        void removeEdge (int v , int u,bool directed);
+        void removeEdge (int v , int u,bool directed = false);
         void print_graph ();
         bool has_edge(int u ,int v, bool directed);
         int get_vertex();

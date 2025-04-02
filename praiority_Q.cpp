@@ -117,30 +117,6 @@ namespace graphs
     }
     
 
-    // void praiority_Q::pra_push_key(int u , int v , int w ,int key)
-    // {
-    //     Node * new_node = new Node();
-    //     new_node->data = u;
-    //     new_node->weight = w;
-    //     new_node->neigbor = v;
-    //     new_node->key = key;
-
-    //     if (!head || key < head->weight) {
-    //         new_node->next = head;
-    //         head = new_node;
-    //     } else {
-    //         Node* curr = head;
-    //         while (curr->next && curr->next->weight <= key) {
-    //             curr = curr->next;
-    //         }
-    //         new_node->next = curr->next;
-    //         curr->next = new_node;
-    //     }
-
-    //     size++;
-        
-    // }
-
     void praiority_Q::pra_push_key(int u, int v, int w, int key) {
         Node* new_node = new Node();
         new_node->data = u;
