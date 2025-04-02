@@ -9,8 +9,8 @@ namespace graphs
         int V;
     public:
         Algorithm(int num);
-        Graph BFS(Graph &gr , int s);
-        
+        Graph BFS(Graph &gr , int s, bool *connected = nullptr);
+
         Graph main_DFS(Graph &gr , int s);
         void DFS_visit(Graph &gr , int u , int*color , int *pi ,int *d , int *f, int &time);
 

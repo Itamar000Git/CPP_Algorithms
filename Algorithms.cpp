@@ -13,7 +13,7 @@ namespace graphs
         V=num;
     }
 
-    Graph Algorithm::BFS(Graph &gr , int s)  { //find the shortest path from single source
+    Graph Algorithm::BFS(Graph &gr , int s , bool * connected)  { //find the shortest path from single source
         if(s>gr.get_vertex() || s<0){
             throw std::out_of_range("Source vertex out of bound");
         }
@@ -61,14 +61,18 @@ namespace graphs
             }
             color[u]=BLACK; // once all neigbors updated, the prosses ends for u
         }
-        int connected=1; //reference int that equal to 1 if the graph connected and 0 if not.
+        
+        if(connected != nullptr){
+            *connected=true;
+        }
 
         ///////////////////////////prints/////////////////////////
+
         std::cout<<"d:" ;
         for (int i =0; i<vertex_num;i++){
             std::cout<<" '" << d[i] << "' ,";
-            if( d[i]==inf){
-               connected=0;
+            if( d[i]==inf && connected != nullptr){ //if there is a vertex that not connected to the source
+               *connected=false;
                
             }
         }
@@ -250,6 +254,11 @@ namespace graphs
         if(gr.get_vertex()==0){
             throw std::runtime_error("Grph is empty");
         }
+        bool connected = false;
+        BFS(gr,0,&connected);
+        if(connected==false){
+            throw std::runtime_error("Graph is not connected");
+        }
         std::cout<<"Kruskal algorithm"<<std::endl;
 
         int inf=std::numeric_limits<int>::max();
@@ -325,6 +334,16 @@ namespace graphs
 
     
     Graph Algorithm::prim(Graph &g){ 
+
+        if(g.get_vertex()==0){
+            throw std::runtime_error("Grph is empty");
+        }
+        bool connected = false;
+        BFS(g,0,&connected);
+        if(connected==false){
+            throw std::runtime_error("Graph is not connected");
+        }
+        std::cout<<"Prim algorithm"<<std::endl;
         int key[V]; 
         int parent[V]; 
         bool inMST[V]; 
