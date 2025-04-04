@@ -8,24 +8,24 @@
 using namespace graphs;
 
 int main() {
-    Graph g(10) ,g1(5) , g2(10) ;
+    Graph g(10) ,g1(10) , g2(10) ;
   
-    //int connected = 0;    
-    // g.addEdge(0, 1, 10,false);
-    // g.addEdge(0, 4, 20,false);
-    // g.addEdge(1, 2, 30,false);
-    // g.addEdge(1, 3, 40,false);
-    // g.addEdge(2, 3, 60,false);
-    // g.addEdge(3, 4, 70,false);
-    // g.addEdge(1, 4, 50,false);
-    // g.addEdge(2, 5, 40,false);
-    // g.addEdge(3, 6, 30,false);
-    // g.addEdge(2, 6, 7,false);
-    // g.addEdge(5, 7, 30,false);
-    // g.addEdge(5, 8, 40,false);
-    // g.addEdge(0, 8, 50,false);
-    // g.addEdge(7, 9, 50,false);
-    // g.addEdge(3, 9, 10,false);
+    int connected = 0;    
+    g.addEdge(0, 1, 10,false);
+    g.addEdge(0, 4, 20,false);
+    g.addEdge(1, 2, 30,false);
+    g.addEdge(1, 3, 40,false);
+    g.addEdge(2, 3, 60,false);
+    g.addEdge(3, 4, 70,false);
+    g.addEdge(1, 4, 50,false);
+    g.addEdge(2, 5, 40,false);
+    g.addEdge(3, 6, 30,false);
+    g.addEdge(2, 6, 7,false);
+    g.addEdge(5, 7, 30,false);
+    g.addEdge(5, 8, 40,false);
+    g.addEdge(0, 8, 50,false);
+    g.addEdge(7, 9, 50,false);
+    g.addEdge(3, 9, 10,false);
 
     
  
@@ -87,17 +87,25 @@ int main() {
     // Graph dfs_g = alg.main_DFS(g,2);
     // dfs_g.print_graph();
 
-    // g1.addEdge(0, 1, 10,false);
-    // g1.addEdge(0, 4, 20,false);
-    // g1.addEdge(1, 2, 30,false);
-    // g1.addEdge(1, 3, 40,false);
-    // g1.addEdge(2, 3, 60,false);
-    // g1.print_graph();
-    // Graph dijkestra_g = alg.dijkstra(g1,4);
+    // g1.addEdge(0, 1, 50);
+    // g1.addEdge(0, 3, 30);
+    // g1.addEdge(1, 2, 20);
+    // g1.addEdge(1, 4, 40);
+    // g1.addEdge(2, 5, 30);
+    // g1.addEdge(5, 0, 40);
+    // g1.addEdge(3, 6, 20);
+    // g1.addEdge(4, 7, 50);
+    // g1.addEdge(5, 8, 40);
+    // g1.addEdge(6, 9, 60);
+    // g1.addEdge(7, 8, 10);
+    // g1.addEdge(8, 9, 20);
+    // Graph dijkestra_g = alg.dijkstra(g1,2);
+    
     // dijkestra_g.print_graph();
 
 
-    // UnionFind uf(10); // יצירת Union-Find עם 10 אלמנטים
+
+    // UnionFind uf(10); 
 
     // uf.Union(1, 2);
     // uf.Union(2, 3);
@@ -115,29 +123,43 @@ int main() {
 
 
 
-    g2.addEdge(0, 1, 50,false);
-    g2.addEdge(0, 4, 20,false);
-    g2.addEdge(1, 2, 30,false);
-    g2.addEdge(1, 3, 30,false);
-    g2.addEdge(2, 3, 60,false);
-    g2.addEdge(3, 4, 100,false);
-    g2.addEdge(1, 4, 20,false);
-    //g2.addEdge(2, 5, 40,false);
-    g2.addEdge(3, 6, 30,false);
-    g2.addEdge(2, 6, 7,false);
-   // g2.addEdge(5, 7, 30,false);
-    //g2.addEdge(5, 8, 40,false);
-    g2.addEdge(0, 8, 50,false);
-    g2.addEdge(7, 9, 100,false);
-    g2.addEdge(3, 9, 10,false);
+    // g2.addEdge(0, 1, 50,false);
+    // g2.addEdge(0, 4, 20,false);
+    // g2.addEdge(1, 2, 30,false);
+    // g2.addEdge(1, 3, 30,false);
+    // g2.addEdge(2, 3, 60,false);
+    // g2.addEdge(3, 4, 100,false);
+    // g2.addEdge(1, 4, 20,false);
+    // g2.addEdge(2, 5, 40,false);
+    // g2.addEdge(3, 6, 30,false);
+    // g2.addEdge(2, 6, 7,false);
+    // g2.addEdge(5, 7, 30,false);
+    // g2.addEdge(5, 8, 40,false);
+    // g2.addEdge(0, 8, 50,false);
+    // g2.addEdge(7, 9, 100,false);
+    // g2.addEdge(3, 9, 10,false);
 
     // g2.print_graph();
     // Graph kruskal_tree = alg.kruskal(g2);
     // kruskal_tree.print_graph();
 
-    g2.print_graph();
-    Graph prim_tree = alg.prim(g2);
-    prim_tree.print_graph();
+    Graph g5(5);
+    Algorithm alg1(5);
+    g5.addEdge(0, 1, 50);
+    g5.addEdge(0, 4, 20);
+    g5.addEdge(1, 2, 30);
+    g5.addEdge(1, 3, 30);
+    g5.addEdge(2, 3, 10);
+    g5.addEdge(3, 4, 100);
+    g5.addEdge(1, 4, 20);
+
+    Graph kruskal_tree_2 = alg1.kruskal(g5);
+    kruskal_tree_2.print_graph();
+    std::cout<< "weight of the tree is: " << kruskal_tree_2.get_graph_wheight() << std::endl;
+
+    // g2.print_graph();
+    // Graph prim_tree = alg.prim(g2);
+    // prim_tree.print_graph();
 
         return 0;
 }

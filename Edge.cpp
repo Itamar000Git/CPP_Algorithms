@@ -11,7 +11,7 @@ Edge::Edge(){
     weight=std::numeric_limits<int>::max();
 }
 
-Edge::Edge(int n, int w =1)
+Edge::Edge(int n, int w )
 {
     neighbor=n;
     weight=w;   

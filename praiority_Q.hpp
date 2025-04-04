@@ -18,12 +18,14 @@ namespace graphs
 
         Node *head;
         int size;
+        int *d;
 
     public:
-        praiority_Q(int s);
+        praiority_Q(int s, int *d = nullptr);
         praiority_Q();
         void pra_push(int u , int v , int w);//w = in dikjastra w and in prim key
         int pra_pop();
+        void pra_update();
         void print() const;
         int min_pop(int * d);
         bool Q_is_empty();

@@ -12,7 +12,7 @@ namespace graphs
         int neighbor, weight;
     public:
         Edge();
-        Edge(int neighbor, int weight);
+        Edge(int neighbor, int weight =1);
         int get_neighbor();
         int get_weigt();
         void set_weigt(int val);

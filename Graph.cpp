@@ -33,6 +33,33 @@ namespace graphs
         
         }
 
+
+    Graph::Graph(const Graph &other){
+        V = other.V;
+        size = new int[V]();
+        g_list = new Edge*[V]();
+
+        if (g_list == nullptr || size == nullptr) {
+            throw std::runtime_error("Memory allocation failed");
+            return;
+        }
+
+        for (int i = 0; i < V; i++) {
+            size[i] = other.size[i];
+            g_list[i] = new Edge[size[i]]();
+
+            if (g_list[i] == nullptr) {
+                throw std::runtime_error("Memory allocation failed");
+                return;
+            }
+
+            for (int j = 0; j < size[i]; j++) {
+                g_list[i][j] = other.g_list[i][j];
+            }
+        }
+    }
+
+
     void Graph::addEdge ( int u,int v, int w , bool directed)
         {
 
@@ -45,7 +72,7 @@ namespace graphs
                 g_list[u] = new Edge[V](); 
             }
          
-            g_list[u][size[u]] = Edge( v, w);
+            g_list[u][size[u]] = Edge(v, w);
             size[u]++;
             
             if(!directed){
@@ -59,7 +86,7 @@ namespace graphs
     
         }
      
-        }
+    }
 
     bool Graph::has_edge(int u, int v, bool directed) { // checks if the edge exists
             if (u >= V || v >= V || u < 0 || v < 0) {
@@ -92,55 +119,56 @@ namespace graphs
             return false; 
         }
 
-    void Graph::removeEdge ( int u, int v, bool directed)
-        {
-            if (u >= V || v >= V || u < 0 || v < 0) {
-                throw std::out_of_range("Vertex index out of bounds");
-                return;
-            }
 
-            int list[V];
-            get_vertex_list(u,list);
-            if(has_edge(u,v,directed)){   
-                for(int i=0; i<size[u];i++){
-                   if(list[i]==v){
-                        for(int j=i;j<size[v]; j++){
-                            g_list[u][j]=g_list[u][j+1];
-                        }
-                        size[u]--;
-                        break;
+
+    void Graph::removeEdge(int u, int v, bool directed) {
+        if (u >= V || v >= V || u < 0 || v < 0) {
+            throw std::out_of_range("Vertex index out of bounds");
+        }
+
+    
+        if (has_edge(u, v, directed)) {
+            int t = size[u];
+            for (int i = 0; i < t; i++) {
+                if (g_list[u][i].get_neighbor() == v) {
+                    for (int j = i; j < t - 1; j++) {
+                        g_list[u][j] = g_list[u][j + 1];
                     }
+                    size[u]--;
+                    break;
                 }
-                if(directed==false){
-                    //int s2=size[v];
-                    int list2[V];
-                    get_vertex_list(v,list2);
-                    for(int i=0; i<size[v];i++){
-                        if(list2[i]==u){
-                            for(int j=i;j<size[v]; j++){
-                                g_list[v][j]=g_list[v][j+1];
-                            }
+            }
+    
+            if (!directed) {
+
+                int t = size[v];
+                for (int i = 0; i < t; i++) {
+                    if (g_list[v][i].get_neighbor() == u) {
+                        for (int j = i; j < t - 1; j++) {
+                            g_list[v][j] = g_list[v][j + 1];
+                        }
                         size[v]--;
                         break;
-                        }
                     }
                 }
             }
-                
-            else{
-                std::cout<<"Edge not Exist"<<std::endl;
-                throw std::runtime_error("Edge does not exist"); 
-            }
+        } else {
+            throw std::runtime_error("Edge does not exist");
         }
+    }
+
     void Graph::print_graph ()
         {
+            int t =0;
             std::cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\print\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"<<std::endl;
             for(int i=0; i<V ;i++){
                 std::cout<<"{";
                 std::cout<<i<<" :";
-                for(int j=0; j<size[i]; j++){
+            
+                t=size[i];
+                for(int j=0; j<t; j++){
                     std::cout<<"(v- "<<g_list[i][j].get_neighbor()<<" w- " <<g_list[i][j].get_weigt();
-                    if(j!=size[i]-1){
+                    if(j!=t-1){
                         std:: cout << ") , ";
                     }
                 }
@@ -187,18 +215,18 @@ namespace graphs
                 throw std::invalid_argument("Number of vertices must be positive");
                 return;
             }
-            if(new_g.get_vertex() != vertex_num){
-                throw std::invalid_argument("The new graph must have the same number of vertices");
-                return;
-            }
+            // if(new_g.get_vertex() != vertex_num){
+            //     throw std::invalid_argument("The new graph must have the same number of vertices");
+            //     return;
+            // }
             if(pi == nullptr || d == nullptr) {
                 throw std::invalid_argument("Pointer to pi or d is null");
                 return;
             }
-            if(original.get_vertex() != vertex_num){
-                throw std::invalid_argument("The original graph must have the same number of vertices");
-                return;
-            }
+            // if(original.get_vertex() != vertex_num){
+            //     throw std::invalid_argument("The original graph must have the same number of vertices");
+            //     return;
+            // }
             for( int i = 0; i <vertex_num ; i++){
                 if(pi[i]>=0){ // build the tree by order
                     int weight =d[i];
@@ -234,9 +262,31 @@ namespace graphs
                 throw std::runtime_error("Edge does not exist");
                 return;
             }
-            g_list[indexi][indexj].set_weigt(val);
+            int adj = size[indexi];
+            for (int i = 0; i < adj; i++) {
+                if (g_list[indexi][i].get_neighbor() == indexj) {
+                    g_list[indexi][i].set_weigt(val);
+                    return;
+                }
+            }
+            throw std::runtime_error("Edge not found in adjacency list");
+
         }
-    Graph::~Graph() {
+    
+
+    int Graph::get_graph_wheight(){
+        int sum = 0;
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < size[i]; j++) {
+                sum += g_list[i][j].get_weigt();
+            }
+        }
+        return sum ; // Since the graph is undirected, we divide by 2
+    }
+
+
+
+        Graph::~Graph() {
         if(g_list !=nullptr){
             for (int i = 0; i < V; i++) {
                 if (g_list[i] != nullptr) {

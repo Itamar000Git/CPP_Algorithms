@@ -14,7 +14,7 @@ namespace graphs
     }
 
     Graph Algorithm::BFS(Graph &gr , int s , bool * connected)  { //find the shortest path from single source
-        if(s>gr.get_vertex() || s<0){
+        if(s>=gr.get_vertex() || s<0){
             throw std::out_of_range("Source vertex out of bound");
         }
         if(gr.get_vertex()==0){
@@ -26,9 +26,7 @@ namespace graphs
         if(vertex_num==0){
             throw std::runtime_error("Grph is empty");
         }
-        if(s>vertex_num || s<0){
-            throw std::out_of_range("Source vertex out of bound");
-        }
+
 
         int inf = std::numeric_limits<int>::max();
         Color color [vertex_num]; //0 = W , 1 = G, 2 = B
@@ -40,6 +38,7 @@ namespace graphs
             color[j]=WHITE;
         }
            
+
         int u, list[vertex_num], neigbors;
 
         Queue Q = Queue(vertex_num); //create the queue 
@@ -84,10 +83,7 @@ namespace graphs
         }
         std::cout<<std::endl;
         
-        if( connected==0){
-            std::cout<< "The graph is not conneced"<<std::endl;
-        }
-         ///////////////////////////end prints/////////////////////////
+
 
         Graph bfs_g(vertex_num); 
 
@@ -98,7 +94,16 @@ namespace graphs
 
     void Algorithm::DFS_visit(Graph &gr , int u , int*color , int *pi ,int *d , int *f,int &time) //recursive function that visit all the graph
     {   
-        
+        if(u>=gr.get_vertex() || u<0){
+            throw std::out_of_range("Source vertex out of bound");
+        }
+        if(gr.get_vertex()==0){
+            throw std::runtime_error("Grph is empty");
+        }
+        if(color == nullptr || pi == nullptr || d == nullptr || f == nullptr){
+            throw std::invalid_argument("Pointer to color, pi, d or f is null");
+        }
+
         int vertex_num=gr.get_vertex(); 
         color[u]=1;
         time=time+1;
@@ -122,7 +127,10 @@ namespace graphs
 
     Graph Algorithm::main_DFS(Graph &gr , int s)
     {  
-        if(s>gr.get_vertex() || s<0){
+        if(gr.get_vertex() == 0){
+            throw std::out_of_range("Source vertex out of bound");
+        }
+        if(s>=gr.get_vertex() || s<0){
             throw std::out_of_range("Source vertex out of bound");
         }
         if(gr.get_vertex()==0){
@@ -179,6 +187,9 @@ namespace graphs
 
     Graph Algorithm::dijkstra(Graph &gr , int s)
     {
+        if(gr.get_vertex() == 0){
+            throw std::out_of_range("Source vertex out of bound");
+        }
         if(s>gr.get_vertex() || s<0){
             throw std::out_of_range("Source vertex out of bound");
         }
@@ -192,29 +203,44 @@ namespace graphs
         int d[vertex_num];
         int pi[vertex_num];
         int u;
-        praiority_Q Q  = praiority_Q(s); //Create the praiority queue
+        int list[vertex_num];
+        int neigbors;
+        praiority_Q Q(s,d); //Create the praiority queue
         for( int j =0 ;j< vertex_num ; j++){ //initial all distance to inf , all parants to -1
-            d[j]=inf;
+            d[j]=inf/2;
             pi[j]=-1;
         }
 
         for(int i =0 ; i< vertex_num; i++)
         {
-            for(int j =0 ;j< vertex_num; j++)
-            {
-                if(gr.has_edge(i,j,true))
-                {
-                    Q.pra_push(i,j,gr.get_weight(i,j)); //Push all the edges to the queue
+            neigbors= gr.get_size(i);  // get neigbors number
+            gr.get_vertex_list(i,list); // insert to list all neigbors
+            for(int j=0;j<neigbors;j++){
+                if(gr.has_edge(i,list[j],true)){
+                    if(gr.get_weight(i,list[j]) < 0){
+                        throw std::runtime_error("Negative weight edge");
+                        return NULL;
+                    }
+                    Q.pra_push(i,list[j],gr.get_weight(i,list[j])); //Push all the edges to the queue
                 }
             }
+
         }
+        
         d[s]=0;
         while (!Q.Q_is_empty())
         {
             u=Q.pra_pop(); //pop the vertex with the minimum weight
-            for(int i =0 ;i < vertex_num  ; i++){
-                if( gr.has_edge(u,i,true)){
-                    relax(u, i , gr.get_weight(u,i), d, pi); //make relax on all neigbors
+            neigbors= gr.get_size(u);  // get neigbors number
+            gr.get_vertex_list(u,list); // insert to list all neigbors
+            for(int j=0;j<neigbors;j++){
+                if(gr.has_edge(u,list[j],true)){
+                    if(d[list[j]] > d[u] + gr.get_weight(u,list[j])){ //if the distance to the neigbor is greater than the distance to the vertex + the weight of the edge
+                            d[list[j]] = d[u] + gr.get_weight(u,list[j]); //relax the edge
+                            pi[list[j]]=u;
+                            Q.pra_update();
+          
+                    }
                 }
             }
 
@@ -233,101 +259,93 @@ namespace graphs
         std::cout<<std::endl;
         
 
-        Graph dijes(vertex_num); 
-
+        Graph dijes (vertex_num);
         gr.create_graph(dijes , pi ,d , vertex_num, gr);
-
        
         return dijes;
     }
 
-    void Algorithm::relax(int u , int v , int w, int * d , int * pi) //function that relax the edge u-v
-    { 
-        if(d[v] > d[u] + w ){
-            d[v] = d[u] + w;
-            pi[v]=u;
-        }
-     }
-    
-    
-    Graph Algorithm::kruskal(Graph &gr){
-        if(gr.get_vertex()==0){
-            throw std::runtime_error("Grph is empty");
+
+    Graph Algorithm::kruskal(Graph &gr) {
+        if (gr.get_vertex() == 0) {
+            throw std::runtime_error("Graph is empty");
         }
         bool connected = false;
-        BFS(gr,0,&connected);
-        if(connected==false){
+        BFS(gr, 0, &connected);
+        if (!connected) {
             throw std::runtime_error("Graph is not connected");
         }
-        std::cout<<"Kruskal algorithm"<<std::endl;
-
-        int inf=std::numeric_limits<int>::max();
-        int w , u , v;
-        
-        UnionFind mst = UnionFind(MAXN);  //as default we start with 0
-        int vertex_num= gr.get_vertex();
-        int pi[vertex_num] , d[vertex_num];
-        for( int i=0 ;i< vertex_num ; i++){
-            pi[i]=-1;
-            d[i]=inf; //can be rank array
+        std::cout << "Kruskal algorithm" << std::endl;
+        int vertex_num = gr.get_vertex();
+        int inf = std::numeric_limits<int>::max();
+        int w, u, v;
+        UnionFind mst(vertex_num); // Union-Find structure
+        int pi[vertex_num], d[vertex_num];
+        for (int i = 0; i < vertex_num; i++) {
+            pi[i] = -1;
+            d[i] = inf;
         }
+    
+        int edges_num = vertex_num * (vertex_num - 1); // Maximum possible edges
+        int edges[edges_num][3]; // Array to store edges
+        int e_count = 0;
 
-        int edges_num = vertex_num * (vertex_num - 1) / 2; //n choos 2;
-        int edges[edges_num][3]; //creates the edges array
-        int num_of_edges=0;
-        int e_count=0;
-
-        for( int i =0 ; i< vertex_num ;i++){
-            num_of_edges=gr.get_size(i);
-            int list[num_of_edges];    
-            gr.get_vertex_list(i,list);
-            for(int j =0 ; j<num_of_edges ; j++) //creates tripple from each edge
-            {
-                w= gr.get_weight(i,list[j]);
-                edges[e_count][0] = w;   
-                edges[e_count][1] = i;     
-                edges[e_count][2] = list[j]; 
-                e_count++;
+        for (int i = 0; i < vertex_num; i++) {
+            int num_of_neighbors = gr.get_size(i);
+            int list[num_of_neighbors];
+            gr.get_vertex_list(i, list);
+            for (int j = 0; j < num_of_neighbors; j++) {
+                    w = gr.get_weight(i, list[j]);
+                    edges[e_count][0] = w;
+                    edges[e_count][1] = i;
+                    edges[e_count][2] = list[j];
+                    e_count++;
             }
         }
-
-
-        for( int i =0 ; i< e_count-1;i++){//bubble sort for all edges
-            for( int j =0 ; j< e_count-i-1 ;j++){
-                if(edges[j][0]>edges[j+1][0]){
-                    w=edges[j][0];
-                    u=edges[j][1];
-                    v=edges[j][2];
-                    edges[j][0]=edges[j+1][0];
-                    edges[j][1]=edges[j+1][1];
-                    edges[j][2]=edges[j+1][2];
-                    edges[j+1][0] = w;
-                    edges[j+1][1] = u;
-                    edges[j+1][2] = v;
+    
+        // Sort edges by weight using bubble sort
+        for (int i = 0; i < e_count - 1; i++) {
+            for (int j = 0; j < e_count - i - 1; j++) {
+                if (edges[j][0] > edges[j + 1][0]) {
+                    int temp_w = edges[j][0];
+                    int temp_u = edges[j][1];
+                    int temp_v = edges[j][2];
+                    edges[j][0] = edges[j + 1][0];
+                    edges[j][1] = edges[j + 1][1];
+                    edges[j][2] = edges[j + 1][2];
+                    edges[j + 1][0] = temp_w;
+                    edges[j + 1][1] = temp_u;
+                    edges[j + 1][2] = temp_v;
                 }
             }
         }
-        for (int i = 0; i < e_count; i++) { // Runs through the sorted edges
-            int w = edges[i][0];
-            int u = edges[i][1];
-            int v = edges[i][2];
     
-            if (mst.find(u)!=mst.find(0)) { //Use union-find to check if u and v are in the same set
-                mst.Union(u, v); //If not, add the edge to the MST
-                pi[v] = u; // Set the parent of v to u
-                d[v] = w;   // Set the distance of v to the weight of the edge
-
+        for (int i = 0; i < e_count; i++) {
+            w = edges[i][0];
+            u = edges[i][1];
+            v = edges[i][2];
+    
+            if (mst.find(u) != mst.find(v)) { // Check if u and v are in different sets
+               
+                if(pi[v] == -1){ // If v is not already in the MST
+                    mst.Union(u, v); // Union the sets
+                    pi[v] = u; // Set the parent of v to u
+                    d[v] = w; // Set the distance of v to the weight of the edge
+                }else if( d[v] > w){ // If v is already in the MST and the new edge is smaller
+                    mst.Union(u, v); // Union the sets
+                    d[v] = w; // Update the distance of v
+                    pi[v] = u;
+                }
             }
         }
-        std::cout<<"pi:" ;
-
-        for (int i =0; i<vertex_num;i++){
-            std::cout<<"'" << pi[i] << "' ,";
+        std::cout << "pi:";
+    
+        for (int i = 0; i < vertex_num; i++) {
+            std::cout << "'" << pi[i] << "' ,";
         }
-        std::cout<<std::endl;
-  
-        Graph kruskal_g(vertex_num); 
-
+        std::cout << std::endl;
+    
+        Graph kruskal_g(vertex_num);
         gr.create_graph(kruskal_g, pi, d, vertex_num, gr);
         return kruskal_g;
     }

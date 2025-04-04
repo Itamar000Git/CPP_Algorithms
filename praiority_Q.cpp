@@ -7,9 +7,16 @@
 
 namespace graphs
 {
-    praiority_Q:: praiority_Q(int s):head(nullptr), size(0)
+    praiority_Q:: praiority_Q(int s, int * d):head(nullptr), size(0)
     {  
+        if(s<0){
+            throw std::out_of_range("Source vertex out of bound");
+        }
+        if(d == nullptr){
+            throw std::invalid_argument("Pointer to d is null");
+        }
         pra_push(s,-1,0);
+        this->d=d;
     }
     praiority_Q:: praiority_Q():head(nullptr), size(0)
     {  
@@ -22,12 +29,12 @@ namespace graphs
         new_node->weight = w;
         new_node->neigbor = v;
 
-        if (!head || w < head->weight) {
+        if (!head || d[u] < d[head->data]) {
             new_node->next = head;
             head = new_node;
         } else {
             Node* curr = head;
-            while (curr->next && curr->next->weight <= w) {
+            while (curr->next && d[curr->next->data] <= d[u]) {
                 curr = curr->next;
             }
             new_node->next = curr->next;
@@ -35,7 +42,30 @@ namespace graphs
         }
 
         size++;
-        
+    }
+
+ 
+    void praiority_Q::pra_update() {
+        if (!head || !head->next) return; 
+    
+        Node *sorted = nullptr; 
+        while (head) {
+            Node *curr = head;
+            head = head->next;
+            
+            if (!sorted || d[curr->data] < d[sorted->data]) {
+                curr->next = sorted;
+                sorted = curr;
+            } else {
+                Node *temp = sorted;
+                while (temp->next && d[temp->next->data] <= d[curr->data]) {
+                    temp = temp->next;
+                }
+                curr->next = temp->next;
+                temp->next = curr;
+            }
+        }
+        head = sorted;
     }
 
     int praiority_Q::pra_pop()
