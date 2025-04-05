@@ -5,7 +5,7 @@
 #include "Graph.hpp"
 #include "Queue.hpp"
 #include "Algorithms.hpp"
-#include"Union.hpp"
+#include "Union.hpp"
 #include "praiority_Q.hpp"
 #include "doctest.h"
 using namespace graphs;
@@ -22,7 +22,8 @@ TEST_CASE("Testing the graph functions"){
     g1.addEdge(3, 4, 70,false);
     g1.addEdge(1, 4, 50,false);
 
-    CHECK(g1.has_edge(0, 1,false) == true);//check if the edge was added
+    CHECK_THROWS_AS(g1.addEdge(0, 4,false), std::runtime_error); //check if its possible to add an edge that already exist
+
     g1.removeEdge(0, 1,false);
     g1.removeEdge(0, 4,false);
 

@@ -267,6 +267,7 @@ namespace graphs
 
 
     Graph Algorithm::kruskal(Graph &gr) {
+        std::cout << "Kruskal algorithm" << std::endl;
         if (gr.get_vertex() == 0) {
             throw std::runtime_error("Graph is empty");
         }
@@ -275,7 +276,7 @@ namespace graphs
         if (!connected) {
             throw std::runtime_error("Graph is not connected");
         }
-        std::cout << "Kruskal algorithm" << std::endl;
+
         int vertex_num = gr.get_vertex();
         int inf = std::numeric_limits<int>::max();
         int w, u, v;

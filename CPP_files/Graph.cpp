@@ -67,7 +67,10 @@ namespace graphs
                 throw std::out_of_range("Vertex index out of bounds");
                 return;
             }
-
+            if(this->has_edge(u,v,true)){
+                throw std::runtime_error("Edge already exists");
+                return;
+            }
             if (g_list[u] == nullptr) {
                 g_list[u] = new Edge[V](); 
             }
@@ -160,7 +163,7 @@ namespace graphs
     void Graph::print_graph ()
         {
             int t =0;
-            std::cout<<"\\\\\\\\\\\\\\\\\\\\\\\\\print\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"<<std::endl;
+            std::cout<<"printed graph: "<<::std::endl;
             for(int i=0; i<V ;i++){
                 std::cout<<"{";
                 std::cout<<i<<" :";
