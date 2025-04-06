@@ -114,50 +114,50 @@ In this part of the code we try to test the extream cases that can hapand and ma
     * Try to get_vertex_list()(neigbors list) and insert it to non exist list - invalid_argument exeption.
     * Try to get_vertex_list()(neigbors list) to negative vertex - out_of_range exeption.
 
-1. BFS test:
+2. BFS test:
     * Check if the function returns true on the connected pointer when the graph is connected.
     * Check if after BFS the neigbor list for each vertext its as expacted.
     * Check if the level-by-level method of the BFS workiung well.
     * Check if the BFS detect unconnected graphs.
     * Try to run BFS with vertext out of range - out_of_range exception.
 
-2. Queue test:
+3. Queue test:
     * Check if is_empty() function returns true to an empty queue and false to full.
     * Try to pop a vertex from empty queue - runtime_error exception.
     * Try to push vertex to the Queueu more than capacity - runtime_error excepation.
     * Check if the first element that insterted is the first that popes out.
     * Try to create Queueu with invalid num of elements - invalid_argument exception.
 
-3. DFS test:
+4. DFS test:
     * Try to run a DFS with out of range vertex - out_of_range exception.
     * Check if the number of neigbors after DFS is as expected.
     * Run a DFS on unconnected graph and print the resault.
     * Check if BFS also retuns that the graph is not connected.
 
-4. Dijkestra test:
+5. Dijkestra test:
     * Check if the distance between source vertex to chosen vertex is he minimum as expected, (0-9 , brake down as 0-3 , 3-6 , 6-9)
     * show that there is no directed edge between 0-9
     * Check if dijkestra choose a better option after added one.
     * Run dijestra with negative edge - runtime_error exception.
     * Run dijestra from out of range vertex -  out_of_range.
 
-5. praiority_Q test:
+6. praiority_Q test:
     * Create Queue with negative number of vertex - out_of_range exception.
     * Check if the Queue returnt the minimum edge value that in d[].
     * Check if the update function works correctly.
     * Check that is_empty() function returns true on empty queue.
     * Trying to pop a vertext when the queue is empty - runtime_error exception.    
 
-6. Kruskal test:
+7. Kruskal test:
     * Try to run kruskal on empty graph - runtime_error exception.
     * Check if the mst gives the minimal Weight.
     * Changing values and check again.
     * Check unconnected graph - runtime_error Exception.
 
-7. Union find test:
+8. Union find test:
     * Check if the connected function returns the correct values.
 
-8. Prim test:
+9. Prim test:
     * Check if the weight for empty graph.
     * Check unconnected graph - runtime_error Exception.
     * Check if the mst gives the minimal Weight.
