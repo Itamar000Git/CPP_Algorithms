@@ -40,8 +40,6 @@ TEST_CASE("Testing the graph functions"){
     CHECK_THROWS_AS(g1.get_vertex_list(-1,list), std::out_of_range);// //check if its possible to get a vertex list with negative index
    
 }
-
-
 TEST_CASE("Testing the BFS function") {
     std::cout<<"||||||||||||||||||||Testing the BFS functions|||||||||||||||||||||||"<<std::endl;
     Graph g2(10);
@@ -115,8 +113,7 @@ TEST_CASE("Testing the Queue function") {
     CHECK(q.pop() == 1); // Check if the first element popped is correct
     CHECK_THROWS_AS(Queue q1(-1), std::invalid_argument); // Check if creating a queue with negative size throws an error
 }
-
- TEST_CASE("Testing the DFS function") {
+TEST_CASE("Testing the DFS function") {
     std::cout<<"||||||||||||||||||||Testing the DFS functions|||||||||||||||||||||||"<<std::endl;
     Graph g3(10);
     g3.addEdge(0, 1, 10);
@@ -192,7 +189,6 @@ TEST_CASE("Testing the Queue function") {
     
     dfs_g4.print_graph();
  }
-
 TEST_CASE("Testing the Dijkestra function"){
 std::cout<<"||||||||||||||||||||Testing the Dijkestra functions|||||||||||||||||||||||"<<std::endl;
     Graph g5(10);
@@ -213,7 +209,7 @@ std::cout<<"||||||||||||||||||||Testing the Dijkestra functions|||||||||||||||||
     Graph dijkstra_g = alg.dijkstra(g5,0);
     dijkstra_g.print_graph();
     CHECK(dijkstra_g.get_weight(0, 3) == 30);
-    CHECK(dijkstra_g.get_weight(3, 6) == 50);
+    CHECK(dijkstra_g.get_weight(3, 6) == 50);   
     CHECK(dijkstra_g.get_weight(6, 9) == 110);
 
     CHECK(dijkstra_g.has_edge(0,9,true) == false); 
@@ -237,7 +233,6 @@ std::cout<<"||||||||||||||||||||Testing the Dijkestra functions|||||||||||||||||
     CHECK_THROWS_AS(alg.dijkstra(g5,10), std::out_of_range); //check if its possible to run Dijkstra on a vertex that not exist
     CHECK_THROWS_AS(alg.dijkstra(g5,-1), std::out_of_range); //check if its possible to run Dijkstra on a vertex that not exist}
 }
-
 TEST_CASE("Testing the Prairity_Q function") {
     praiority_Q pq1;
     int * d = new int[5];
@@ -266,8 +261,6 @@ TEST_CASE("Testing the Prairity_Q function") {
    CHECK(pq.Q_is_empty() == true); // Check if the queue is empty
    CHECK_THROWS_AS(pq.pra_pop(), std::runtime_error); // Check if popping from an empty queue throws an error
 }
-
-
 TEST_CASE("Testing the Kruskal function") {
     std::cout<<"||||||||||||||||||||Testing the Kruskal functions|||||||||||||||||||||||"<<std::endl;
     Graph g5(5);
@@ -308,7 +301,6 @@ TEST_CASE("Testing the Kruskal function") {
     CHECK_THROWS_AS(alg.kruskal(g5), std::runtime_error); // Check if running Kruskal on a disconnected graph throws an error
 
 }
-
 TEST_CASE("Testing the Union find function") {
     UnionFind uf(10); // Create a Union-Find with 10 elements
     uf.Union(1, 2);
@@ -325,10 +317,6 @@ TEST_CASE("Testing the Union find function") {
 
     CHECK(uf.connected(1, 5) == true); // Check if 1 and 5 are now connected
 }
-
-
-
-
 TEST_CASE("Testing the prim function") {
     Graph g6(1) ,g7(5);
     Algorithm alg(1) , alg1(5);
